@@ -1,0 +1,151 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+/// Улоге CMS-а. У фази 1 панел користи само ADMIN.
+enum Role {
+  ADMIN
+  EDITOR
+  AUTHOR
+  STUDENT
+}
+
+/// DRAFT = нацрт, PUBLISHED = видљиво, HIDDEN = сакривено.
+enum ContentStatus {
+  DRAFT
+  PUBLISHED
+  HIDDEN
+}
+
+model User {
+  id           String    @id @default(cuid()) @map("_id")
+  name         String
+  email        String    @unique
+  passwordHash String
+  role         Role      @default(AUTHOR)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  pages        Page[]
+  articles     Article[]
+  media        Media[]
+
+  @@map("users")
+}
+
+model Page {
+  id             String        @id @default(cuid()) @map("_id")
+  title          String
+  slug           String        @unique
+  content        String
+  featuredImage  String?
+  status         ContentStatus @default(DRAFT)
+  seoTitle       String?
+  seoDescription String?
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  createdById    String
+  createdBy      User          @relation(fields: [createdById], references: [id])
+
+  @@map("pages")
+}
+
+model Category {
+  id          String    @id @default(cuid()) @map("_id")
+  name        String
+  slug        String    @unique
+  description String    @default("")
+  articles    Article[]
+
+  @@map("categories")
+}
+
+model Article {
+  id             String        @id @default(cuid()) @map("_id")
+  title          String
+  slug           String        @unique
+  excerpt        String
+  content        String
+  featuredImage  String?
+  categoryId     String?
+  category       Category?     @relation(fields: [categoryId], references: [id])
+  status         ContentStatus @default(DRAFT)
+  publishedAt    DateTime?
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  authorId       String
+  author         User          @relation(fields: [authorId], references: [id])
+  seoTitle       String?
+  seoDescription String?
+
+  @@index([status, publishedAt])
+  @@map("articles")
+}
+
+model Media {
+  id           String   @id @default(cuid()) @map("_id")
+  filename     String
+  url          String
+  alt          String   @default("")
+  mimeType     String
+  size         Int
+  createdAt    DateTime @default(now())
+  uploadedById String
+  uploadedBy   User     @relation(fields: [uploadedById], references: [id])
+
+  @@map("media")
+}
+
+model Menu {
+  id    String     @id @default(cuid()) @map("_id")
+  name  String
+  slug  String     @unique
+  items MenuItem[]
+
+  @@map("menus")
+}
+
+model MenuItem {
+  id        String     @id @default(cuid()) @map("_id")
+  label     String
+  href      String
+  sortOrder Int
+  enabled   Boolean    @default(true)
+  menuId    String
+  menu      Menu       @relation(fields: [menuId], references: [id], onDelete: Cascade)
+  parentId  String?
+  parent    MenuItem?  @relation("MenuChildren", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  children  MenuItem[] @relation("MenuChildren")
+
+  @@index([menuId, sortOrder])
+  @@map("menu_items")
+}
+
+model SiteSettings {
+  id             String @id @default("default") @map("_id")
+  schoolName     String
+  shortName      String
+  nameLine1      String
+  nameLine2      String
+  location       String
+  tagline        String
+  aboutTeaser    String
+  aboutFacts     Json
+  address        String
+  city           String
+  postalCode     String
+  phone          String
+  phoneAlt       String?
+  email          String
+  facebookUrl    String?
+  instagramUrl   String?
+  youtubeUrl     String?
+  seoTitle       String
+  seoDescription String
+
+  @@map("site_settings")
+}
