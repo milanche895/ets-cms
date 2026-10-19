@@ -2,7 +2,7 @@ import { PrismaClient, type Prisma } from "@prisma/client";
 import { hash } from "bcryptjs";
 import { articles } from "../data/articles";
 import { categories } from "../data/categories";
-import { galleryItems } from "../data/gallery";
+import { schoolMedia } from "../data/schoolMedia";
 import { mainNavigation } from "../data/navigation";
 import { pages } from "../data/pages";
 import { siteSettings } from "../data/site";
@@ -139,17 +139,21 @@ async function main() {
     }
   }
 
-  const mediaCount = await prisma.media.count();
-  if (mediaCount === 0) {
-    await prisma.media.createMany({
-      data: galleryItems.map((item) => ({
+  for (const item of schoolMedia) {
+    const existing = await prisma.media.findFirst({ where: { url: item.url } });
+    if (existing) {
+      continue;
+    }
+    await prisma.media.create({
+      data: {
         filename: item.filename,
         url: item.url,
         alt: item.alt,
         mimeType: item.mimeType,
         size: item.size,
+        createdAt: new Date(item.createdAt),
         uploadedById: admin.id,
-      })),
+      },
     });
   }
 

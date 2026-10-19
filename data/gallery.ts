@@ -1,65 +1,11 @@
 import type { Media } from "@/types/content";
+import { schoolMedia } from "@/data/schoolMedia";
 
-/** Привремене фотографије. Школске слике касније долазе кроз медијатеку. */
-export const galleryItems: Media[] = [
-  {
-    id: "galerija-1",
-    filename: "gallery-1.jpg",
-    url: "/images/gallery-1.jpg",
-    alt: "Рад за рачунаром у техничком окружењу",
-    mimeType: "image/jpeg",
-    size: 198389,
-    createdAt: "2026-09-01T08:00:00.000Z",
-    uploadedBy: "admin",
-  },
-  {
-    id: "galerija-2",
-    filename: "gallery-2.jpg",
-    url: "/images/gallery-2.jpg",
-    alt: "Програмирање на преносном рачунару",
-    mimeType: "image/jpeg",
-    size: 150265,
-    createdAt: "2026-09-01T08:00:00.000Z",
-    uploadedBy: "admin",
-  },
-  {
-    id: "galerija-3",
-    filename: "gallery-3.jpg",
-    url: "/images/gallery-3.jpg",
-    alt: "Технички рад у радионици",
-    mimeType: "image/jpeg",
-    size: 127436,
-    createdAt: "2026-09-01T08:00:00.000Z",
-    uploadedBy: "admin",
-  },
-  {
-    id: "galerija-4",
-    filename: "gallery-4.jpg",
-    url: "/images/gallery-4.jpg",
-    alt: "Тимски рад на задатку",
-    mimeType: "image/jpeg",
-    size: 146256,
-    createdAt: "2026-09-01T08:00:00.000Z",
-    uploadedBy: "admin",
-  },
-  {
-    id: "galerija-5",
-    filename: "gallery-5.jpg",
-    url: "/images/gallery-5.jpg",
-    alt: "Електронске компоненте изблиза",
-    mimeType: "image/jpeg",
-    size: 214624,
-    createdAt: "2026-09-01T08:00:00.000Z",
-    uploadedBy: "admin",
-  },
-  {
-    id: "galerija-6",
-    filename: "gallery-6.jpg",
-    url: "/images/gallery-6.jpg",
-    alt: "Заједнички рад за рачунаром",
-    mimeType: "image/jpeg",
-    size: 111521,
-    createdAt: "2026-09-01T08:00:00.000Z",
-    uploadedBy: "admin",
-  },
-];
+/** Школске фотографије. Логотипи и видео остају у медијима, али нису плочице галерије. */
+export const galleryItems: Media[] = schoolMedia.filter((item) => {
+  if (!item.mimeType.startsWith("image/")) {
+    return false;
+  }
+  const name = item.filename.toLowerCase();
+  return !/(logo|sindikat|unijasprs|^vls|mpn-|site-icon|about-img|about-image|blog-|banner|client|review-)/.test(name);
+});

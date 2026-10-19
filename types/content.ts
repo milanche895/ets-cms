@@ -12,7 +12,6 @@ export type IconName =
   | "robot"
   | "groups"
   | "dashboard"
-  | "pages"
   | "articles"
   | "categories"
   | "media"

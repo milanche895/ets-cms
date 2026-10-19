@@ -1,7 +1,6 @@
 import type { IconName } from "@/types/content";
 
 export type AdminModuleSlug =
-  | "pages"
   | "articles"
   | "categories"
   | "media"
@@ -19,14 +18,6 @@ export type AdminModule = {
 };
 
 export const adminModules: AdminModule[] = [
-  {
-    slug: "pages",
-    href: "/admin/pages",
-    title: "Странице",
-    description: "Сталне странице сајта: наслов, садржај, статус и SEO.",
-    icon: "pages",
-    fields: ["id", "title", "slug", "content", "featuredImage", "status", "seoTitle", "seoDescription", "createdAt", "updatedAt", "createdBy"],
-  },
   {
     slug: "articles",
     href: "/admin/articles",

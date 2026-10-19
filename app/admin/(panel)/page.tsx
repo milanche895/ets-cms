@@ -17,7 +17,6 @@ export const metadata: Metadata = {
 };
 
 const countBySlug = {
-  pages: "pages",
   articles: "articles",
   categories: "categories",
   media: "media",

@@ -20,8 +20,8 @@ export function Hero({ site }: { site: SiteSettings }) {
       }}
     >
       <Image
-        src="/images/hero.jpg"
-        alt=""
+        src="/images/school/SajamTehnikeETS07.jpg"
+        alt="Робот школе на полигону сајма технике"
         fill
         priority
         sizes="100vw"

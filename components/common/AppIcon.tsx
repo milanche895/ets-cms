@@ -4,7 +4,6 @@ import BoltOutlinedIcon from "@mui/icons-material/BoltOutlined";
 import CategoryOutlinedIcon from "@mui/icons-material/CategoryOutlined";
 import CodeOutlinedIcon from "@mui/icons-material/CodeOutlined";
 import ComputerOutlinedIcon from "@mui/icons-material/ComputerOutlined";
-import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
 import EmojiEventsOutlinedIcon from "@mui/icons-material/EmojiEventsOutlined";
 import GroupsOutlinedIcon from "@mui/icons-material/GroupsOutlined";
 import HubOutlinedIcon from "@mui/icons-material/HubOutlined";
@@ -32,7 +31,6 @@ const iconMap: Record<IconName, ElementType<SvgIconProps>> = {
   robot: PrecisionManufacturingOutlinedIcon,
   groups: GroupsOutlinedIcon,
   dashboard: SpaceDashboardOutlinedIcon,
-  pages: DescriptionOutlinedIcon,
   articles: ArticleOutlinedIcon,
   categories: CategoryOutlinedIcon,
   media: PermMediaOutlinedIcon,
