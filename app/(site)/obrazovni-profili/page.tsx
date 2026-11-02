@@ -1,6 +1,5 @@
 import Grid from "@mui/material/Grid";
 import type { Metadata } from "next";
-import Link from "next/link";
 import { ProgramCard } from "@/components/common/ProgramCard";
 import { Section } from "@/components/common/Section";
 import { PageHeader } from "@/components/pages/PageHeader";
@@ -24,9 +23,7 @@ export default async function ProgramsPage() {
         <Grid container spacing={2.5}>
           {programs.map((program) => (
             <Grid key={program.id} size={{ xs: 12, md: 4 }}>
-              <Link href={`/obrazovni-profili/${program.slug}`} style={{ textDecoration: "none", color: "inherit" }}>
-                <ProgramCard program={program} />
-              </Link>
+              <ProgramCard program={program} />
             </Grid>
           ))}
         </Grid>

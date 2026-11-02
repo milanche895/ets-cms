@@ -29,7 +29,7 @@ export async function getSearchEntries(): Promise<SearchEntry[]> {
       id: project.id,
       title: project.title,
       group: "Пројекат",
-      href: "/projekti",
+      href: `/projekti/${project.slug}`,
     })),
     ...activities.map((activity) => ({
       id: activity.id,

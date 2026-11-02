@@ -114,8 +114,12 @@ export type Program = {
   slug: string;
   summary: string;
   duration: string;
+  level: string;
   icon: IconName;
   body: string;
+  highlights: string[];
+  image: string;
+  imageAlt: string;
 };
 
 export type Project = {
@@ -123,6 +127,8 @@ export type Project = {
   title: string;
   slug: string;
   summary: string;
+  body: string;
+  highlights: string[];
   image: string;
   imageAlt: string;
 };
