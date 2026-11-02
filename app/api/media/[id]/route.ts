@@ -2,6 +2,7 @@ import { unlink } from "node:fs/promises";
 import path from "node:path";
 import { revalidatePath } from "next/cache";
 import { fail } from "@/lib/api";
+import { deleteAdminImage } from "@/lib/cloudinary";
 import { jsonError, jsonOk } from "@/lib/json";
 import { isResponse, requireAdmin } from "@/lib/require-admin";
 import { deleteMedia } from "@/services/gallery";
@@ -24,7 +25,9 @@ export async function DELETE(_request: Request, context: RouteContext) {
       return jsonError("Запис није пронађен.", 404);
     }
 
-    if (media.url.startsWith("/uploads/")) {
+    if (media.publicId) {
+      await deleteAdminImage(media.publicId).catch(() => undefined);
+    } else if (media.url.startsWith("/uploads/")) {
       const folder = path.join(process.cwd(), "public", "uploads");
       const target = path.resolve(folder, path.basename(media.url));
       if (target.startsWith(folder)) {

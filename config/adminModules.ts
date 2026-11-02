@@ -40,7 +40,7 @@ export const adminModules: AdminModule[] = [
     title: "Медији",
     description: "Слике и документи који се касније везују за вести и странице.",
     icon: "media",
-    fields: ["id", "filename", "url", "alt", "mimeType", "size", "createdAt", "uploadedBy"],
+    fields: ["id", "filename", "url", "publicId", "alt", "mimeType", "size", "createdAt", "uploadedBy"],
   },
   {
     slug: "users",

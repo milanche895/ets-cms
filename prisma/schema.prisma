@@ -90,6 +90,7 @@ model Media {
   id           String   @id @default(cuid()) @map("_id")
   filename     String
   url          String
+  publicId     String?
   alt          String   @default("")
   mimeType     String
   size         Int

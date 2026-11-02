@@ -62,6 +62,7 @@ export type Media = {
   id: string;
   filename: string;
   url: string;
+  publicId?: string | null;
   alt: string;
   mimeType: string;
   size: number;

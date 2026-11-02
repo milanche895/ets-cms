@@ -22,7 +22,7 @@ export default async function NewArticlePage() {
           { name: "slug", label: "Слаг", helperText: "Ако остане празно, прави се из наслова." },
           { name: "excerpt", label: "Кратак опис", multiline: true, rows: 3 },
           { name: "content", label: "Садржај", multiline: true, rows: 10, helperText: "Нови пасус: празан ред." },
-          { name: "featuredImage", label: "Слика", helperText: "Путања попут /uploads/slika.jpg или /images/..." },
+          { name: "featuredImage", label: "Слика", helperText: "Адреса из одељка Медији, или путања попут /images/..." },
           {
             name: "categoryId",
             label: "Категорија",

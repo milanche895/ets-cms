@@ -34,7 +34,7 @@ export default async function EditArticlePage({ params }: EditArticleProps) {
           { name: "slug", label: "Слаг", value: article.slug },
           { name: "excerpt", label: "Кратак опис", multiline: true, rows: 3, value: article.excerpt },
           { name: "content", label: "Садржај", multiline: true, rows: 10, value: article.content },
-          { name: "featuredImage", label: "Слика", value: article.featuredImage ?? "" },
+          { name: "featuredImage", label: "Слика", value: article.featuredImage ?? "", helperText: "Адреса из одељка Медији, или путања попут /images/..." },
           {
             name: "categoryId",
             label: "Категорија",

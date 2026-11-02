@@ -51,6 +51,7 @@ export function mapMedia(row: MediaRow): Media {
     id: row.id,
     filename: row.filename,
     url: row.url,
+    publicId: row.publicId,
     alt: row.alt,
     mimeType: row.mimeType,
     size: row.size,
