@@ -1,5 +1,6 @@
 import { revalidatePath } from "next/cache";
 import { fail, readJson } from "@/lib/api";
+import { deleteStoredImage } from "@/lib/cloudinary";
 import { jsonError, jsonOk } from "@/lib/json";
 import { isResponse, requireAdmin } from "@/lib/require-admin";
 import { articleSchema } from "@/lib/schemas";
@@ -50,13 +51,16 @@ export async function POST(request: Request) {
     return jsonError("Наслов не може да се претвори у слаг.", 400);
   }
 
+  let article;
   try {
-    const article = await createArticle(toInput(body, slug), admin.id);
-    revalidatePath("/");
-    revalidatePath("/vesti");
-    revalidatePath(`/vesti/${article.slug}`);
-    return jsonOk({ article }, 201);
+    article = await createArticle(toInput(body, slug), admin.id);
   } catch (error) {
+    await deleteStoredImage(body.featuredImage);
     return fail(error);
   }
+
+  revalidatePath("/");
+  revalidatePath("/vesti");
+  revalidatePath(`/vesti/${article.slug}`);
+  return jsonOk({ article }, 201);
 }

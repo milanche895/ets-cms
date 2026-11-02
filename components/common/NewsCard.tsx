@@ -33,13 +33,17 @@ export function NewsCard({ article, dateLabel }: NewsCardProps) {
     >
       <Box sx={{ position: "relative", height: 190 }}>
         {article.featuredImage ? (
-          <Image
-            src={article.featuredImage}
-            alt=""
-            fill
-            sizes="(max-width: 600px) 100vw, (max-width: 900px) 50vw, 33vw"
-            style={{ objectFit: "cover" }}
-          />
+          article.featuredImage.startsWith("http") ? (
+            <Box component="img" src={article.featuredImage} alt="" sx={{ width: "100%", height: "100%", objectFit: "cover" }} />
+          ) : (
+            <Image
+              src={article.featuredImage}
+              alt=""
+              fill
+              sizes="(max-width: 600px) 100vw, (max-width: 900px) 50vw, 33vw"
+              style={{ objectFit: "cover" }}
+            />
+          )
         ) : null}
       </Box>
       <Box sx={{ p: 2.5, display: "flex", flexDirection: "column", flexGrow: 1, gap: 1.25 }}>

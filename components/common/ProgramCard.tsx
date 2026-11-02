@@ -18,7 +18,7 @@ export function ProgramCard({ program }: { program: Program }) {
               src={program.image}
               alt={program.imageAlt}
               fill
-              sizes="(max-width: 900px) 100vw, 33vw"
+              sizes="(max-width: 900px) 100vw, 50vw"
               style={{ objectFit: "cover" }}
             />
           </Box>

@@ -7,7 +7,7 @@ import { getPrograms } from "@/services/programs";
 
 export const metadata: Metadata = {
   title: "Образовни профили",
-  description: "Електротехничар рачунара, администратор рачунарских мрежа и електричар.",
+  description: "Електротехничар рачунара и администратор рачунарских мрежа.",
 };
 
 export default async function ProgramsPage() {
@@ -17,12 +17,12 @@ export default async function ProgramsPage() {
     <>
       <PageHeader
         title="Образовни профили"
-        subtitle="Школа образује ученике за три профила у подручју електротехнике."
+        subtitle="Школа образује ученике за два четворогодишња профила у подручју електротехнике."
       />
       <Section>
         <Grid container spacing={2.5}>
           {programs.map((program) => (
-            <Grid key={program.id} size={{ xs: 12, md: 4 }}>
+            <Grid key={program.id} size={{ xs: 12, md: 6 }}>
               <ProgramCard program={program} />
             </Grid>
           ))}

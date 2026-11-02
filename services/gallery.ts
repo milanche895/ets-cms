@@ -35,24 +35,3 @@ export async function getGalleryPreview(limit = 6): Promise<Media[]> {
   return items.slice(0, limit);
 }
 
-export async function createMedia(input: {
-  filename: string;
-  url: string;
-  publicId?: string | null;
-  alt: string;
-  mimeType: string;
-  size: number;
-  uploadedById: string;
-}): Promise<Media> {
-  const row = await prisma.media.create({ data: input });
-  return mapMedia(row);
-}
-
-export async function deleteMedia(id: string): Promise<(Media & { publicId: string | null }) | null> {
-  const row = await prisma.media.findUnique({ where: { id } });
-  if (!row) {
-    return null;
-  }
-  await prisma.media.delete({ where: { id } });
-  return { ...mapMedia(row), publicId: row.publicId };
-}

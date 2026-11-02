@@ -14,6 +14,7 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
+import { normalizeForSearch } from "@/lib/transliterate";
 import type { SearchEntry } from "@/types/content";
 
 type SearchDialogProps = {
@@ -27,12 +28,14 @@ export function SearchDialog({ open, onClose, entries }: SearchDialogProps) {
   const [query, setQuery] = useState("");
 
   const results = useMemo(() => {
-    const normalized = query.trim().toLocaleLowerCase("sr");
+    const normalized = normalizeForSearch(query.trim());
     if (!normalized) {
       return entries.slice(0, 6);
     }
 
-    return entries.filter((entry) => entry.title.toLocaleLowerCase("sr").includes(normalized)).slice(0, 8);
+    return entries
+      .filter((entry) => normalizeForSearch(`${entry.title} ${entry.group}`).includes(normalized))
+      .slice(0, 8);
   }, [entries, query]);
 
   function openResult(href: string) {

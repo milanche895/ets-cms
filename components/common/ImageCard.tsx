@@ -17,7 +17,11 @@ export function ImageCard({ src, alt }: ImageCardProps) {
         bgcolor: "primary.main",
       }}
     >
-      <Image src={src} alt={alt} fill sizes="(max-width: 900px) 50vw, 33vw" style={{ objectFit: "cover" }} />
+      {src.startsWith("http") ? (
+        <Box component="img" src={src} alt={alt} sx={{ width: "100%", height: "100%", objectFit: "cover" }} />
+      ) : (
+        <Image src={src} alt={alt} fill sizes="(max-width: 900px) 50vw, 33vw" style={{ objectFit: "cover" }} />
+      )}
     </Box>
   );
 }

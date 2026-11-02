@@ -16,6 +16,7 @@ import { useState } from "react";
 import { SchoolLogo } from "@/components/common/SchoolLogo";
 import { MobileNav } from "@/components/layout/MobileNav";
 import { SearchDialog } from "@/components/layout/SearchDialog";
+import { ScriptToggle } from "@/components/script/ScriptToggle";
 import { phoneHref } from "@/lib/format";
 import type { NavItem, SearchEntry, SiteSettings } from "@/types/content";
 
@@ -34,7 +35,7 @@ export function Header({ site, navigation, searchEntries }: HeaderProps) {
     <Box component="header" sx={{ position: "sticky", top: 0, zIndex: (theme) => theme.zIndex.appBar }}>
       <Box sx={{ bgcolor: "primary.main", color: "primary.contrastText", display: { xs: "none", md: "block" } }}>
         <Container maxWidth="lg">
-          <Stack direction="row" spacing={3} sx={{ py: 0.75, fontSize: 14 }}>
+          <Stack direction="row" spacing={3} sx={{ py: 0.75, fontSize: 14, alignItems: "center" }}>
             <Typography variant="body2">{site.location}</Typography>
             <Typography component="a" href={phoneHref(site.phone)} variant="body2" sx={{ color: "inherit" }}>
               {site.phone}
@@ -42,6 +43,9 @@ export function Header({ site, navigation, searchEntries }: HeaderProps) {
             <Typography component="a" href={`mailto:${site.email}`} variant="body2" sx={{ color: "inherit" }}>
               {site.email}
             </Typography>
+            <Box sx={{ ml: "auto" }}>
+              <ScriptToggle tone="inverse" />
+            </Box>
           </Stack>
         </Container>
       </Box>
@@ -59,13 +63,14 @@ export function Header({ site, navigation, searchEntries }: HeaderProps) {
                 color: "inherit",
                 textDecoration: "none",
                 minWidth: 0,
-                flexShrink: 0,
+                flex: { xs: "1 1 auto", lg: "0 0 auto" },
               }}
             >
               <SchoolLogo size={46} />
               <Box sx={{ minWidth: 0 }}>
                 <Typography
                   component="span"
+                  noWrap
                   sx={{ display: { xs: "block", sm: "none" }, fontWeight: 800, lineHeight: 1.2 }}
                 >
                   {site.shortName}
@@ -131,7 +136,10 @@ export function Header({ site, navigation, searchEntries }: HeaderProps) {
               })}
             </Stack>
 
-            <Box sx={{ display: "flex", alignItems: "center", ml: { xs: "auto", lg: 0.5 } }}>
+            <Box sx={{ display: "flex", alignItems: "center", gap: 0.5, ml: { xs: "auto", lg: 0.5 }, flexShrink: 0 }}>
+              <Box sx={{ display: { xs: "inline-flex", md: "none" } }}>
+                <ScriptToggle />
+              </Box>
               <IconButton aria-label="Отвори претрагу" onClick={() => setSearchOpen(true)}>
                 <SearchIcon />
               </IconButton>

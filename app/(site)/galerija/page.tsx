@@ -25,7 +25,7 @@ export default async function GalleryPage() {
       <PageHeader title="Галерија" subtitle="Фотографије са наставе, пројеката и активности." />
       <Section>
         {items.length === 0 ? (
-          <Typography color="text.secondary">Галерија је празна. Слике се додају у CMS-у, у делу Медији.</Typography>
+          <Typography color="text.secondary">Галерија је празна.</Typography>
         ) : (
           <Grid container spacing={1.5}>
             {items.map((item) => (

@@ -2,6 +2,14 @@ html {
   scroll-behavior: smooth;
 }
 
+html.pismo-lat:not(.pismo-spremno) {
+  background: #f4f7fb;
+}
+
+html.pismo-lat:not(.pismo-spremno) body {
+  visibility: hidden;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

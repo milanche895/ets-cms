@@ -1,5 +1,6 @@
 import { revalidatePath } from "next/cache";
 import { fail, readJson } from "@/lib/api";
+import { deleteStoredImage } from "@/lib/cloudinary";
 import { jsonError, jsonOk } from "@/lib/json";
 import { isResponse, requireAdmin } from "@/lib/require-admin";
 import { articleSchema } from "@/lib/schemas";
@@ -47,6 +48,9 @@ export async function PUT(request: Request, context: RouteContext) {
     if (previous && previous.slug !== article.slug) {
       revalidatePath(`/vesti/${previous.slug}`);
     }
+    if (previous?.featuredImage && previous.featuredImage !== article.featuredImage) {
+      await deleteStoredImage(previous.featuredImage);
+    }
     return jsonOk({ article });
   } catch (error) {
     return fail(error);
@@ -68,6 +72,7 @@ export async function DELETE(_request: Request, context: RouteContext) {
     revalidatePath("/vesti");
     if (previous) {
       revalidatePath(`/vesti/${previous.slug}`);
+      await deleteStoredImage(previous.featuredImage);
     }
     return jsonOk({ ok: true });
   } catch (error) {

@@ -3,7 +3,6 @@ import type { IconName } from "@/types/content";
 export type AdminModuleSlug =
   | "articles"
   | "categories"
-  | "media"
   | "users"
   | "menus"
   | "settings";
@@ -33,14 +32,6 @@ export const adminModules: AdminModule[] = [
     description: "Групе за вести, на пример роботика или програмирање.",
     icon: "categories",
     fields: ["id", "name", "slug", "description"],
-  },
-  {
-    slug: "media",
-    href: "/admin/media",
-    title: "Медији",
-    description: "Слике и документи који се касније везују за вести и странице.",
-    icon: "media",
-    fields: ["id", "filename", "url", "publicId", "alt", "mimeType", "size", "createdAt", "uploadedBy"],
   },
   {
     slug: "users",

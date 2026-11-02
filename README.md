@@ -111,7 +111,7 @@ services/              функције које компоненте зову
 theme/                 MUI тема и боје школе
 prisma/schema.prisma   модел базе
 proxy.ts               заштита путање /admin
-public/uploads/        фајлови отпремљени из CMS-а
+public/uploads/        стари локални фајлови
 ```
 
 Јавне адресе:
@@ -141,8 +141,7 @@ public/uploads/        фајлови отпремљени из CMS-а
 | PUT, DELETE | `/api/pages/[id]` | измена и брисање странице |
 | GET, POST | `/api/categories` | списак и нова категорија |
 | PUT, DELETE | `/api/categories/[id]` | измена и брисање категорије |
-| POST | `/api/media` | отпремање слике или PDF-а |
-| DELETE | `/api/media/[id]` | брисање медија |
+| POST, DELETE | `/api/uploads` | слика за вест, само администратор |
 | GET, PUT | `/api/settings` | подешавања школе |
 | GET, PUT | `/api/menus` | главни мени |
 | GET, POST, DELETE | `/api/users` | корисници |

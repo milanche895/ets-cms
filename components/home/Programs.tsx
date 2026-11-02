@@ -10,12 +10,12 @@ export function Programs({ programs }: { programs: Program[] }) {
       <SectionTitle
         kicker="Упис"
         title="Образовни профили"
-        subtitle="Школа образује ученике за три профила у подручју електротехнике."
+        subtitle="Школа образује ученике за два четворогодишња профила у подручју електротехнике."
         action={{ href: "/obrazovni-profili", label: "Сви профили" }}
       />
       <Grid container spacing={2.5}>
         {programs.map((program) => (
-          <Grid key={program.id} size={{ xs: 12, md: 4 }}>
+          <Grid key={program.id} size={{ xs: 12, md: 6 }}>
             <ProgramCard program={program} />
           </Grid>
         ))}

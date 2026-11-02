@@ -1,12 +1,17 @@
 "use client";
 
 import Alert from "@mui/material/Alert";
+import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
 import { useRouter } from "next/navigation";
 import { useState, type FormEvent } from "react";
+
+const imageTypes = new Set(["image/jpeg", "image/png", "image/webp", "image/gif"]);
+const maxImageBytes = 8 * 1024 * 1024;
 
 export type FormField = {
   name: string;
@@ -16,7 +21,7 @@ export type FormField = {
   rows?: number;
   required?: boolean;
   helperText?: string;
-  type?: "text" | "email" | "password" | "select";
+  type?: "text" | "email" | "password" | "select" | "image";
   options?: { value: string; label: string }[];
 };
 
@@ -41,6 +46,8 @@ export function SaveForm({
   const [values, setValues] = useState<Record<string, string>>(() =>
     Object.fromEntries(fields.map((field) => [field.name, field.value ?? ""])),
   );
+  const [files, setFiles] = useState<Record<string, File | null>>({});
+  const [previews, setPreviews] = useState<Record<string, string>>({});
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -56,18 +63,65 @@ export function SaveForm({
     }
   }
 
+  async function uploadImage(file: File): Promise<string> {
+    const body = new FormData();
+    body.set("file", file);
+    const response = await fetch("/api/uploads", { method: "POST", body });
+    const data = (await response.json().catch(() => ({}))) as { url?: string; error?: string };
+    if (!response.ok || !data.url) {
+      throw new Error(data.error ?? "Отпремање слике није успело.");
+    }
+    return data.url;
+  }
+
+  function chooseImage(name: string, file: File | null) {
+    if (file && (!imageTypes.has(file.type) || file.size > maxImageBytes)) {
+      setError("Дозвољене су слике JPG, PNG, WEBP и GIF, до 8 MB.");
+      return;
+    }
+    setError("");
+    setFiles((current) => ({ ...current, [name]: file }));
+    setPreviews((current) => {
+      const previous = current[name];
+      if (previous) {
+        URL.revokeObjectURL(previous);
+      }
+      return { ...current, [name]: file ? URL.createObjectURL(file) : "" };
+    });
+  }
+
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setLoading(true);
     setError("");
+    const payload = { ...values };
+    const uploaded: string[] = [];
 
     try {
-      await send(endpoint, method, values);
+      for (const field of fields) {
+        const file = files[field.name];
+        if (field.type !== "image" || !file) {
+          continue;
+        }
+        const url = await uploadImage(file);
+        uploaded.push(url);
+        payload[field.name] = url;
+      }
+      await send(endpoint, method, payload);
       if (redirectTo) {
         router.push(redirectTo);
       }
       router.refresh();
     } catch (caught) {
+      await Promise.all(
+        uploaded.map((url) =>
+          fetch("/api/uploads", {
+            method: "DELETE",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ url }),
+          }).catch(() => undefined),
+        ),
+      );
       setError(caught instanceof Error ? caught.message : "Чување није успело.");
     } finally {
       setLoading(false);
@@ -95,7 +149,45 @@ export function SaveForm({
     <Stack component="form" spacing={2} onSubmit={onSubmit} sx={{ maxWidth: 760 }}>
       {error ? <Alert severity="error">{error}</Alert> : null}
       {fields.map((field) =>
-        field.type === "select" ? (
+        field.type === "image" ? (
+          <Stack key={field.name} spacing={1}>
+            <Typography variant="body2">{field.label}</Typography>
+            {previews[field.name] || values[field.name] ? (
+              <Box
+                component="img"
+                src={previews[field.name] || values[field.name]}
+                alt=""
+                sx={{ width: 240, height: 150, objectFit: "cover", borderRadius: 1 }}
+              />
+            ) : null}
+            <Stack direction="row" spacing={1}>
+              <Button component="label" variant="outlined">
+                {values[field.name] || files[field.name] ? "Промени слику" : "Додај слику"}
+                <input
+                  hidden
+                  type="file"
+                  accept="image/jpeg,image/png,image/webp,image/gif"
+                  onChange={(event) => chooseImage(field.name, event.target.files?.[0] ?? null)}
+                />
+              </Button>
+              {values[field.name] || files[field.name] ? (
+                <Button
+                  type="button"
+                  color="inherit"
+                  onClick={() => {
+                    chooseImage(field.name, null);
+                    setValues((current) => ({ ...current, [field.name]: "" }));
+                  }}
+                >
+                  Уклони
+                </Button>
+              ) : null}
+            </Stack>
+            <Typography variant="caption" color="text.secondary">
+              {field.helperText ?? "JPG, PNG, WEBP или GIF, до 8 MB."}
+            </Typography>
+          </Stack>
+        ) : field.type === "select" ? (
           <TextField
             key={field.name}
             select

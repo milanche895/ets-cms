@@ -4,7 +4,6 @@ export type DashboardCounts = {
   connected: boolean;
   articles: number | null;
   categories: number | null;
-  media: number | null;
   users: number | null;
   menus: number | null;
 };
@@ -13,22 +12,20 @@ const emptyCounts: DashboardCounts = {
   connected: false,
   articles: null,
   categories: null,
-  media: null,
   users: null,
   menus: null,
 };
 
 export async function getDashboardCounts(): Promise<DashboardCounts> {
   try {
-    const [articles, categories, media, users, menus] = await Promise.all([
+    const [articles, categories, users, menus] = await Promise.all([
       prisma.article.count(),
       prisma.category.count(),
-      prisma.media.count(),
       prisma.user.count(),
       prisma.menu.count(),
     ]);
 
-    return { connected: true, articles, categories, media, users, menus };
+    return { connected: true, articles, categories, users, menus };
   } catch {
     return emptyCounts;
   }

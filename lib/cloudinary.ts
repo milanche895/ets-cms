@@ -54,6 +54,31 @@ export async function uploadAdminImage(file: Buffer, publicId: string): Promise<
   return { url: result.secure_url, publicId: result.public_id };
 }
 
+export function publicIdFromCloudinaryUrl(url: string): string | null {
+  try {
+    const parsed = new URL(url);
+    const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
+    if (parsed.hostname !== "res.cloudinary.com") {
+      return null;
+    }
+    if (cloudName && !parsed.pathname.startsWith(`/${cloudName}/`)) {
+      return null;
+    }
+    const match = parsed.pathname.match(/\/image\/upload\/(?:v\d+\/)?(.+)\.[a-z0-9]+$/i);
+    return match?.[1] ?? null;
+  } catch {
+    return null;
+  }
+}
+
+export async function deleteStoredImage(url: string | null | undefined): Promise<void> {
+  const publicId = url ? publicIdFromCloudinaryUrl(url) : null;
+  if (!publicId) {
+    return;
+  }
+  await deleteAdminImage(publicId).catch(() => undefined);
+}
+
 export async function deleteAdminImage(publicId: string): Promise<void> {
   const api = client();
   if (!api || !publicId) {

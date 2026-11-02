@@ -9,7 +9,7 @@ export const quickLinks: QuickLink[] = [
   },
   {
     title: "Образовни профили",
-    description: "Три профила у подручју електротехнике.",
+    description: "Два четворогодишња профила у подручју електротехнике.",
     href: "/obrazovni-profili",
     icon: "profiles",
   },

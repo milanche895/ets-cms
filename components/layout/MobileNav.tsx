@@ -10,6 +10,7 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import Typography from "@mui/material/Typography";
 import Link from "next/link";
+import { ScriptToggle } from "@/components/script/ScriptToggle";
 import type { NavItem } from "@/types/content";
 
 type MobileNavProps = {
@@ -30,6 +31,13 @@ export function MobileNav({ open, onClose, items, schoolName }: MobileNavProps) 
           <IconButton aria-label="Затвори мени" onClick={onClose}>
             <CloseIcon />
           </IconButton>
+        </Box>
+        <Divider />
+        <Box sx={{ px: 1, py: 1.5 }}>
+          <Typography variant="overline" sx={{ display: "block", mb: 0.75, color: "text.secondary" }}>
+            Писмо
+          </Typography>
+          <ScriptToggle />
         </Box>
         <Divider />
         <List>
