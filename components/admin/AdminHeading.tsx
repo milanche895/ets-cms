@@ -6,11 +6,15 @@ export function AdminHeading({
   title,
   description,
   action,
+  actions,
 }: {
   title: string;
   description?: string;
   action?: { href: string; label: string };
+  actions?: { href: string; label: string }[];
 }) {
+  const buttons = actions ?? (action ? [action] : []);
+
   return (
     <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 2, mb: 2, flexWrap: "wrap" }}>
       <Box>
@@ -23,10 +27,14 @@ export function AdminHeading({
           </Typography>
         ) : null}
       </Box>
-      {action ? (
-        <LinkButton href={action.href} variant="contained">
-          {action.label}
-        </LinkButton>
+      {buttons.length > 0 ? (
+        <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap" }}>
+          {buttons.map((item, index) => (
+            <LinkButton key={item.href} href={item.href} variant={index === 0 ? "contained" : "outlined"}>
+              {item.label}
+            </LinkButton>
+          ))}
+        </Box>
       ) : null}
     </Box>
   );

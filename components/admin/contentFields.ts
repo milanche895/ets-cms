@@ -15,4 +15,15 @@ export const roleOptions = [
   { value: "EDITOR", label: "Уредник" },
   { value: "AUTHOR", label: "Аутор" },
   { value: "STUDENT", label: "Ученик" },
+  { value: "UNION", label: "Председник синдиката" },
 ];
+
+export const unionPostKindOptions = [
+  { value: "ANNOUNCEMENT", label: "Обавештење" },
+  { value: "ACTIVITY", label: "Активност" },
+];
+
+export const unionPostKindLabels: Record<string, string> = {
+  ANNOUNCEMENT: "Обавештење",
+  ACTIVITY: "Активност",
+};

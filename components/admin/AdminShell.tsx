@@ -35,14 +35,23 @@ export function AdminShell({ user, children }: AdminShellProps) {
   const router = useRouter();
   const [mobileOpen, setMobileOpen] = useState(false);
 
+  const modules = user.role === "UNION" ? [] : adminModules;
   const items = [
-    { href: "/admin", label: "Преглед", icon: "dashboard" as const, exact: true },
-    ...adminModules.map((item) => ({
-      href: item.href,
-      label: item.title,
-      icon: item.icon,
-      exact: false,
-    })),
+    ...(user.role === "UNION"
+      ? [
+          { href: "/admin/sindikat", label: "Организација", icon: "union" as const, exact: true },
+          { href: "/admin/sindikat/obavestenja", label: "Обавештења", icon: "articles" as const, exact: false },
+          { href: "/admin/sindikat/aktivnosti", label: "Активности", icon: "trophy" as const, exact: false },
+        ]
+      : [
+          { href: "/admin", label: "Преглед", icon: "dashboard" as const, exact: true },
+          ...modules.map((item) => ({
+            href: item.href,
+            label: item.title,
+            icon: item.icon,
+            exact: false,
+          })),
+        ]),
   ];
 
   async function logout() {
@@ -65,7 +74,7 @@ export function AdminShell({ user, children }: AdminShellProps) {
       <Divider />
       <List sx={{ px: 1, py: 1, flexGrow: 1 }}>
         {items.map((item) => {
-          const selected = item.exact ? pathname === item.href : pathname.startsWith(item.href);
+          const selected = item.exact ? pathname === item.href : pathname === item.href || pathname.startsWith(`${item.href}/`);
           return (
             <ListItemButton
               key={item.href}

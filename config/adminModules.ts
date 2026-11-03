@@ -3,9 +3,11 @@ import type { IconName } from "@/types/content";
 export type AdminModuleSlug =
   | "articles"
   | "categories"
+  | "media"
   | "users"
   | "menus"
-  | "settings";
+  | "settings"
+  | "sindikat";
 
 export type AdminModule = {
   slug: AdminModuleSlug;
@@ -34,6 +36,14 @@ export const adminModules: AdminModule[] = [
     fields: ["id", "name", "slug", "description"],
   },
   {
+    slug: "media",
+    href: "/admin/galerija",
+    title: "Галерија",
+    description: "Фотографије и видео снимци на страници Галерија.",
+    icon: "media",
+    fields: ["id", "filename", "url", "alt", "mimeType", "size", "createdAt"],
+  },
+  {
     slug: "users",
     href: "/admin/users",
     title: "Корисници",
@@ -48,6 +58,14 @@ export const adminModules: AdminModule[] = [
     description: "Ставке главног менија и редослед линкова.",
     icon: "menus",
     fields: ["id", "label", "href", "sortOrder", "enabled", "menuId", "parentId"],
+  },
+  {
+    slug: "sindikat",
+    href: "/admin/sindikat",
+    title: "Синдикат",
+    description: "Подаци о организацији, обавештења и активности синдиката.",
+    icon: "union",
+    fields: ["name", "logo", "about", "presidentName", "email", "phone", "office", "membership"],
   },
   {
     slug: "settings",

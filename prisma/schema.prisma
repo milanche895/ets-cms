@@ -7,12 +7,19 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-/// Улоге CMS-а. У фази 1 панел користи само ADMIN.
+/// Улоге CMS-а. Панел користе ADMIN и UNION.
 enum Role {
   ADMIN
   EDITOR
   AUTHOR
   STUDENT
+  UNION
+}
+
+/// Обавештење или активност синдикалне организације.
+enum UnionPostKind {
+  ANNOUNCEMENT
+  ACTIVITY
 }
 
 /// DRAFT = нацрт, PUBLISHED = видљиво, HIDDEN = сакривено.
@@ -33,6 +40,7 @@ model User {
   pages        Page[]
   articles     Article[]
   media        Media[]
+  unionPosts   UnionPost[]
 
   @@map("users")
 }
@@ -149,4 +157,49 @@ model SiteSettings {
   seoDescription String
 
   @@map("site_settings")
+}
+
+/// Један запис: подаци о синдикалној организацији школе.
+model UnionProfile {
+  id             String  @id @default("default") @map("_id")
+  name           String
+  logo           String?
+  summary        String
+  about          String
+  presidentName  String
+  email          String
+  phone          String
+  office         String
+  officeHours    String
+  membership     String
+  benefits       String
+  affiliation    String
+  facebookUrl    String?
+  seoTitle       String
+  seoDescription String
+
+  @@map("union_profile")
+}
+
+model UnionPost {
+  id             String         @id @default(cuid()) @map("_id")
+  kind           UnionPostKind
+  title          String
+  slug           String         @unique
+  excerpt        String
+  content        String
+  featuredImage  String?
+  location       String?
+  startsAt       DateTime?
+  status         ContentStatus  @default(DRAFT)
+  publishedAt    DateTime?
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  authorId       String
+  author         User           @relation(fields: [authorId], references: [id])
+  seoTitle       String?
+  seoDescription String?
+
+  @@index([status, kind, publishedAt])
+  @@map("union_posts")
 }

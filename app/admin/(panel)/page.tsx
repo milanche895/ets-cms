@@ -21,6 +21,8 @@ const countBySlug = {
   categories: "categories",
   users: "users",
   menus: "menus",
+  sindikat: "unionPosts",
+  media: "gallery",
 } as const;
 
 export default async function DashboardPage() {
@@ -57,7 +59,9 @@ export default async function DashboardPage() {
       ) : null}
 
       <Grid container spacing={2}>
-        {adminModules.map((module) => {
+        {adminModules
+          .filter((module) => session.role !== "UNION" || module.slug === "sindikat")
+          .map((module) => {
           const countKey = module.slug in countBySlug ? countBySlug[module.slug as keyof typeof countBySlug] : undefined;
           const value = countKey ? counts[countKey] : undefined;
 

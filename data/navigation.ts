@@ -10,8 +10,7 @@ export const mainNavigation: NavItem[] = [
   { label: "Актуелно", href: "/vesti" },
   { label: "О школи", href: "/o-skoli" },
   { label: "Образовни профили", href: "/obrazovni-profili" },
-  { label: "Пројекти", href: "/projekti" },
-  { label: "Такмичења", href: "/takmicenja" },
   { label: "Галерија", href: "/galerija" },
+  { label: "Синдикат", href: "/sindikat" },
   { label: "Контакт", href: "/kontakt" },
 ];

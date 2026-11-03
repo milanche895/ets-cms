@@ -6,6 +6,7 @@ import { schoolMedia } from "../data/schoolMedia";
 import { mainNavigation } from "../data/navigation";
 import { pages } from "../data/pages";
 import { siteSettings } from "../data/site";
+import { unionProfile } from "../data/union";
 
 const prisma = new PrismaClient();
 
@@ -120,7 +121,7 @@ async function main() {
     update: { name: "Главни мени" },
     create: { name: "Главни мени", slug: "glavni" },
   });
-  const menuItems = await prisma.menuItem.findMany({ where: { menuId: menu.id } });
+  const menuItems = await prisma.menuItem.findMany({ where: { menuId: menu.id }, orderBy: { sortOrder: "asc" } });
   if (menuItems.length === 0) {
     await prisma.menuItem.createMany({
       data: mainNavigation.map((item, index) => ({
@@ -137,6 +138,37 @@ async function main() {
         await prisma.menuItem.update({ where: { id: match.id }, data: { href: item.href } });
       }
     }
+
+    await prisma.menuItem.deleteMany({
+      where: { menuId: menu.id, href: { in: ["/projekti", "/takmicenja"] } },
+    });
+
+    if (!menuItems.some((row) => row.href === "/sindikat")) {
+      const kontakt = menuItems.find((row) => row.href === "/kontakt");
+      const sortOrder = kontakt?.sortOrder ?? menuItems.length;
+      if (kontakt) {
+        await prisma.menuItem.updateMany({
+          where: { menuId: menu.id, sortOrder: { gte: kontakt.sortOrder } },
+          data: { sortOrder: { increment: 1 } },
+        });
+      }
+      await prisma.menuItem.create({
+        data: { label: "Синдикат", href: "/sindikat", sortOrder, menuId: menu.id },
+      });
+    }
+  }
+
+  const unionRecords = prisma as unknown as {
+    unionProfile: {
+      findUnique(args: { where: { id: string } }): Promise<{ id: string } | null>;
+      create(args: { data: typeof unionProfile & { id: string } }): Promise<unknown>;
+    };
+  };
+  const union = await unionRecords.unionProfile.findUnique({ where: { id: "default" } });
+  if (!union) {
+    await unionRecords.unionProfile.create({
+      data: { id: "default", ...unionProfile },
+    });
   }
 
   for (const item of schoolMedia) {

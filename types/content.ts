@@ -17,7 +17,10 @@ export type IconName =
   | "media"
   | "users"
   | "menus"
-  | "settings";
+  | "settings"
+  | "union";
+
+export type UnionPostKind = "ANNOUNCEMENT" | "ACTIVITY";
 
 export type Page = {
   id: string;
@@ -42,6 +45,7 @@ export type Article = {
   featuredImage: string | null;
   categoryId: string;
   categoryName: string;
+  categorySlug?: string;
   status: ContentStatus;
   publishedAt: string | null;
   createdAt: string;
@@ -95,6 +99,43 @@ export type SiteSettings = {
   youtubeUrl: string | null;
   seoTitle: string;
   seoDescription: string;
+};
+
+export type UnionProfile = {
+  name: string;
+  logo: string | null;
+  summary: string;
+  about: string;
+  presidentName: string;
+  email: string;
+  phone: string;
+  office: string;
+  officeHours: string;
+  membership: string;
+  benefits: string;
+  affiliation: string;
+  facebookUrl: string | null;
+  seoTitle: string;
+  seoDescription: string;
+};
+
+export type UnionPost = {
+  id: string;
+  kind: UnionPostKind;
+  title: string;
+  slug: string;
+  excerpt: string;
+  content: string;
+  featuredImage: string | null;
+  location: string | null;
+  startsAt: string | null;
+  status: ContentStatus;
+  publishedAt: string | null;
+  createdAt: string;
+  updatedAt: string;
+  authorId: string;
+  seoTitle: string | null;
+  seoDescription: string | null;
 };
 
 export type NavItem = {

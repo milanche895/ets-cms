@@ -113,7 +113,7 @@ export function Header({ site, navigation, searchEntries }: HeaderProps) {
               }}
             >
               {navigation.map((item) => {
-                const current = item.href === "/" && pathname === "/";
+                const current = item.href === "/" ? pathname === "/" : pathname === item.href || pathname.startsWith(`${item.href}/`);
                 return (
                   <Button
                     key={item.href}

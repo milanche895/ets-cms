@@ -3,13 +3,16 @@ import { getActivities } from "@/services/activities";
 import { getPublishedArticles } from "@/services/articles";
 import { getPrograms } from "@/services/programs";
 import { getProjects } from "@/services/projects";
+import { getPublishedUnionPosts, getUnionProfile } from "@/services/union";
 
 export async function getSearchEntries(): Promise<SearchEntry[]> {
-  const [articles, programs, projects, activities] = await Promise.all([
+  const [articles, programs, projects, activities, union, unionPosts] = await Promise.all([
     getPublishedArticles(),
     getPrograms(),
     getProjects(),
     getActivities(),
+    getUnionProfile(),
+    getPublishedUnionPosts(),
   ]);
 
   return [
@@ -35,7 +38,22 @@ export async function getSearchEntries(): Promise<SearchEntry[]> {
       id: activity.id,
       title: activity.title,
       group: "Активност",
-      href: "/takmicenja",
+      href:
+        activity.id === "parlament"
+          ? "/o-skoli"
+          : `/vesti?kategorija=${activity.id}`,
+    })),
+    {
+      id: "sindikat",
+      title: union.name,
+      group: "Синдикат",
+      href: "/sindikat",
+    },
+    ...unionPosts.map((post) => ({
+      id: post.id,
+      title: post.title,
+      group: post.kind === "ACTIVITY" ? "Активност синдиката" : "Обавештење синдиката",
+      href: `/sindikat/${post.slug}`,
     })),
   ];
 }

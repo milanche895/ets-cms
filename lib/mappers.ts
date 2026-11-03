@@ -1,5 +1,13 @@
-import type { Article, Category, ContentStatus, Media, Page, SiteSettings } from "@/types/content";
-import type { Article as ArticleRow, Category as CategoryRow, Media as MediaRow, Page as PageRow, SiteSettings as SettingsRow } from "@prisma/client";
+import type { Article, Category, ContentStatus, Media, Page, SiteSettings, UnionPost, UnionProfile } from "@/types/content";
+import type {
+  Article as ArticleRow,
+  Category as CategoryRow,
+  Media as MediaRow,
+  Page as PageRow,
+  SiteSettings as SettingsRow,
+  UnionPost as UnionPostRow,
+  UnionProfile as UnionProfileRow,
+} from "@prisma/client";
 
 export function mapArticle(row: ArticleRow & { category?: CategoryRow | null }): Article {
   return {
@@ -11,6 +19,7 @@ export function mapArticle(row: ArticleRow & { category?: CategoryRow | null }):
     featuredImage: row.featuredImage,
     categoryId: row.categoryId ?? "",
     categoryName: row.category?.name ?? "",
+    categorySlug: row.category?.slug ?? "",
     status: row.status,
     publishedAt: row.publishedAt?.toISOString() ?? null,
     createdAt: row.createdAt.toISOString(),
@@ -92,6 +101,47 @@ export function mapSettings(row: SettingsRow, fallbackFacts: SiteSettings["about
     facebookUrl: row.facebookUrl,
     instagramUrl: row.instagramUrl,
     youtubeUrl: row.youtubeUrl,
+    seoTitle: row.seoTitle,
+    seoDescription: row.seoDescription,
+  };
+}
+
+export function mapUnionProfile(row: UnionProfileRow): UnionProfile {
+  return {
+    name: row.name,
+    logo: row.logo,
+    summary: row.summary,
+    about: row.about,
+    presidentName: row.presidentName,
+    email: row.email,
+    phone: row.phone,
+    office: row.office,
+    officeHours: row.officeHours,
+    membership: row.membership,
+    benefits: row.benefits,
+    affiliation: row.affiliation,
+    facebookUrl: row.facebookUrl,
+    seoTitle: row.seoTitle,
+    seoDescription: row.seoDescription,
+  };
+}
+
+export function mapUnionPost(row: UnionPostRow): UnionPost {
+  return {
+    id: row.id,
+    kind: row.kind,
+    title: row.title,
+    slug: row.slug,
+    excerpt: row.excerpt,
+    content: row.content,
+    featuredImage: row.featuredImage,
+    location: row.location,
+    startsAt: row.startsAt?.toISOString() ?? null,
+    status: row.status,
+    publishedAt: row.publishedAt?.toISOString() ?? null,
+    createdAt: row.createdAt.toISOString(),
+    updatedAt: row.updatedAt.toISOString(),
+    authorId: row.authorId,
     seoTitle: row.seoTitle,
     seoDescription: row.seoDescription,
   };

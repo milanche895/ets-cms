@@ -25,14 +25,14 @@ export function LoginForm() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
       });
-      const data = (await response.json()) as { error?: string };
+      const data = (await response.json()) as { error?: string; user?: { role?: string } };
 
       if (!response.ok) {
         setError(data.error ?? "Пријава није успела.");
         return;
       }
 
-      router.push("/admin");
+      router.push(data.user?.role === "UNION" ? "/admin/sindikat" : "/admin");
       router.refresh();
     } catch {
       setError("Пријава није успела. Проверите везу и покушајте поново.");

@@ -22,7 +22,7 @@ export default async function AdminUsersPage() {
 
   return (
     <>
-      <AdminHeading title="Корисници" description="У панел за сада улази само улога администратор." />
+      <AdminHeading title="Корисници" description="Администратор уређује цео сајт. Председник синдиката улази само у модул Синдикат." />
       <DbNotice />
       <Typography variant="h2" sx={{ fontSize: "1.15rem", mb: 1.5 }}>
         Нови налог

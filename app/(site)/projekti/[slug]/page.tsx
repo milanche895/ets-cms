@@ -79,9 +79,14 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
                 ))}
               </Box>
             </Box>
-            <LinkButton href="/projekti" variant="outlined" sx={{ mt: 3 }}>
-              Сви пројекти
-            </LinkButton>
+            <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1.5, mt: 3 }}>
+              <LinkButton href="/projekti" variant="outlined">
+                Сви пројекти
+              </LinkButton>
+              <LinkButton href="/vesti?kategorija=projekti" variant="outlined">
+                Вести о пројектима
+              </LinkButton>
+            </Box>
           </Box>
         </Box>
 

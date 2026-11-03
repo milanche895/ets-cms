@@ -14,15 +14,15 @@ export const quickLinks: QuickLink[] = [
     icon: "profiles",
   },
   {
-    title: "Пројекти",
-    description: "Роботика, програмирање и радови ученика.",
-    href: "/projekti",
-    icon: "projects",
+    title: "Галерија",
+    description: "Фотографије са наставе, пројеката и активности.",
+    href: "/galerija",
+    icon: "media",
   },
   {
-    title: "Такмичења",
-    description: "Наступи и ваннаставне активности.",
-    href: "/takmicenja",
-    icon: "trophy",
+    title: "О школи",
+    description: "Школа, настава и ваннаставни рад ученика.",
+    href: "/o-skoli",
+    icon: "groups",
   },
 ];

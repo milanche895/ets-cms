@@ -2,14 +2,14 @@ import path from "node:path";
 import { fail } from "@/lib/api";
 import { CloudinaryConfigError, deleteStoredImage, uploadAdminImage } from "@/lib/cloudinary";
 import { jsonError, jsonOk } from "@/lib/json";
-import { isResponse, requireAdmin } from "@/lib/require-admin";
+import { isResponse, requireUnionEditor } from "@/lib/require-admin";
 import { slugify } from "@/lib/slug";
 
 const allowed = new Set(["image/jpeg", "image/png", "image/webp", "image/gif"]);
 const maxBytes = 8 * 1024 * 1024;
 
 export async function POST(request: Request) {
-  const admin = await requireAdmin();
+  const admin = await requireUnionEditor();
   if (isResponse(admin)) {
     return admin;
   }
@@ -40,7 +40,7 @@ export async function POST(request: Request) {
 }
 
 export async function DELETE(request: Request) {
-  const admin = await requireAdmin();
+  const admin = await requireUnionEditor();
   if (isResponse(admin)) {
     return admin;
   }

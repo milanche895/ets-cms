@@ -36,7 +36,7 @@ export const userSchema = z.object({
   name: text.min(1),
   email: z.email(),
   password: z.string().min(8),
-  role: z.enum(["ADMIN", "EDITOR", "AUTHOR", "STUDENT"]),
+  role: z.enum(["ADMIN", "EDITOR", "AUTHOR", "STUDENT", "UNION"]),
 });
 
 export const userDeleteSchema = z.object({
@@ -67,4 +67,38 @@ export const settingsSchema = z.object({
 
 export const menuSchema = z.object({
   text: text,
+});
+
+const optionalEmail = z.string().trim().refine((value) => value.length === 0 || z.email().safeParse(value).success);
+
+export const unionProfileSchema = z.object({
+  name: text.min(1),
+  logo: z.string().nullable().optional(),
+  summary: text,
+  about: text,
+  presidentName: text,
+  email: optionalEmail,
+  phone: text,
+  office: text,
+  officeHours: text,
+  membership: text,
+  benefits: text,
+  affiliation: text,
+  facebookUrl: z.string().optional().default(""),
+  seoTitle: text,
+  seoDescription: text,
+});
+
+export const unionPostSchema = z.object({
+  kind: z.enum(["ANNOUNCEMENT", "ACTIVITY"]),
+  title: text.min(1),
+  slug: text.optional().default(""),
+  excerpt: text.optional().default(""),
+  content: text.optional().default(""),
+  featuredImage: z.string().nullable().optional(),
+  location: text.optional().default(""),
+  startsAt: text.optional().default(""),
+  status: contentStatusSchema.optional().default("DRAFT"),
+  seoTitle: z.string().nullable().optional(),
+  seoDescription: z.string().nullable().optional(),
 });

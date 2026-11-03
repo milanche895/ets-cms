@@ -21,8 +21,9 @@ export type FormField = {
   rows?: number;
   required?: boolean;
   helperText?: string;
-  type?: "text" | "email" | "password" | "select" | "image";
+  type?: "text" | "email" | "password" | "select" | "image" | "date";
   options?: { value: string; label: string }[];
+  imageFit?: "cover" | "contain";
 };
 
 type SaveFormProps = {
@@ -157,7 +158,14 @@ export function SaveForm({
                 component="img"
                 src={previews[field.name] || values[field.name]}
                 alt=""
-                sx={{ width: 240, height: 150, objectFit: "cover", borderRadius: 1 }}
+                sx={{
+                  width: field.imageFit === "contain" ? "auto" : 240,
+                  maxWidth: 240,
+                  height: field.imageFit === "contain" ? 120 : 150,
+                  objectFit: field.imageFit ?? "cover",
+                  borderRadius: 1,
+                  bgcolor: "background.default",
+                }}
               />
             ) : null}
             <Stack direction="row" spacing={1}>
@@ -187,6 +195,19 @@ export function SaveForm({
               {field.helperText ?? "JPG, PNG, WEBP или GIF, до 8 MB."}
             </Typography>
           </Stack>
+        ) : field.type === "date" ? (
+          <TextField
+            key={field.name}
+            label={field.label}
+            name={field.name}
+            type="date"
+            value={values[field.name] ?? ""}
+            onChange={(event) => setValues((current) => ({ ...current, [field.name]: event.target.value }))}
+            required={field.required}
+            helperText={field.helperText}
+            fullWidth
+            slotProps={{ inputLabel: { shrink: true } }}
+          />
         ) : field.type === "select" ? (
           <TextField
             key={field.name}

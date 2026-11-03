@@ -4,7 +4,8 @@ import { canAccessAdmin } from "@/lib/roles";
 import { SESSION_COOKIE, verifySession } from "@/lib/session";
 
 /**
- * Штити /admin. У фази 1 улази само улога ADMIN.
+ * Штити /admin.
+ * Администратор види цео панел. Председник синдиката само модул Синдикат.
  */
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -12,16 +13,21 @@ export async function proxy(request: NextRequest) {
   const session = token ? await verifySession(token) : null;
   const isLoginPage = pathname === "/admin/login";
   const allowed = session ? canAccessAdmin(session.role) : false;
+  const home = session?.role === "UNION" ? "/admin/sindikat" : "/admin";
 
   if (isLoginPage) {
     if (allowed) {
-      return NextResponse.redirect(new URL("/admin", request.url));
+      return NextResponse.redirect(new URL(home, request.url));
     }
     return NextResponse.next();
   }
 
   if (!allowed) {
     return NextResponse.redirect(new URL("/admin/login", request.url));
+  }
+
+  if (session?.role === "UNION" && !pathname.startsWith("/admin/sindikat")) {
+    return NextResponse.redirect(new URL("/admin/sindikat", request.url));
   }
 
   return NextResponse.next();

@@ -1,6 +1,7 @@
 import Box from "@mui/material/Box";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { LinkButton } from "@/components/common/LinkButton";
 import { Section } from "@/components/common/Section";
 import { ContentText } from "@/components/pages/ContentText";
 import { PageHeader } from "@/components/pages/PageHeader";
@@ -45,6 +46,17 @@ export default async function AboutPage() {
               </Box>
             ))}
           </Box>
+        </Box>
+        <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1.5, mt: 4 }}>
+          <LinkButton href="/projekti" variant="outlined">
+            Пројекти ученика
+          </LinkButton>
+          <LinkButton href="/vesti?kategorija=projekti" variant="outlined">
+            Вести о пројектима
+          </LinkButton>
+          <LinkButton href="/vesti?kategorija=takmicenja" variant="outlined">
+            Такмичења
+          </LinkButton>
         </Box>
       </Section>
     </>
