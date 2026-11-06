@@ -14,6 +14,8 @@ enum Role {
   AUTHOR
   STUDENT
   UNION
+  PARLIAMENT
+  AKTIV
 }
 
 /// Обавештење или активност синдикалне организације.
@@ -41,6 +43,7 @@ model User {
   articles     Article[]
   media        Media[]
   unionPosts   UnionPost[]
+  groupPosts   SchoolGroupPost[]
 
   @@map("users")
 }
@@ -202,4 +205,58 @@ model UnionPost {
 
   @@index([status, kind, publishedAt])
   @@map("union_posts")
+}
+
+enum SchoolGroupKey {
+  PARLIAMENT
+  AKTIV
+}
+
+/// Један запис за ђачки парламент или за активе.
+model SchoolGroup {
+  key            SchoolGroupKey @id @map("_id")
+  name           String
+  logo           String?
+  summary        String
+  about          String
+  presidentName  String
+  email          String
+  phone          String
+  office         String
+  officeHours    String
+  membership     String
+  benefits       String
+  affiliation    String
+  facebookUrl    String?
+  seoTitle       String
+  seoDescription String
+  posts          SchoolGroupPost[]
+
+  @@map("school_groups")
+}
+
+model SchoolGroupPost {
+  id             String         @id @default(cuid()) @map("_id")
+  groupKey       SchoolGroupKey
+  group          SchoolGroup    @relation(fields: [groupKey], references: [key])
+  kind           UnionPostKind
+  title          String
+  slug           String
+  excerpt        String
+  content        String
+  featuredImage  String?
+  location       String?
+  startsAt       DateTime?
+  status         ContentStatus  @default(DRAFT)
+  publishedAt    DateTime?
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  authorId       String
+  author         User           @relation(fields: [authorId], references: [id])
+  seoTitle       String?
+  seoDescription String?
+
+  @@unique([groupKey, slug])
+  @@index([groupKey, status, kind, publishedAt])
+  @@map("school_group_posts")
 }

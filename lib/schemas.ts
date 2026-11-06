@@ -36,7 +36,7 @@ export const userSchema = z.object({
   name: text.min(1),
   email: z.email(),
   password: z.string().min(8),
-  role: z.enum(["ADMIN", "EDITOR", "AUTHOR", "STUDENT", "UNION"]),
+  role: z.enum(["ADMIN", "EDITOR", "AUTHOR", "STUDENT", "UNION", "PARLIAMENT", "AKTIV"]),
 });
 
 export const userDeleteSchema = z.object({

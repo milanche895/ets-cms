@@ -101,42 +101,7 @@ export function Header({ site, navigation, searchEntries }: HeaderProps) {
               </Box>
             </Box>
 
-            <Stack
-              component="nav"
-              aria-label="Главни мени"
-              direction="row"
-              sx={{
-                display: { xs: "none", lg: "flex" },
-                flexGrow: 1,
-                justifyContent: "flex-end",
-                gap: 0.25,
-              }}
-            >
-              {navigation.map((item) => {
-                const current = item.href === "/" ? pathname === "/" : pathname === item.href || pathname.startsWith(`${item.href}/`);
-                return (
-                  <Button
-                    key={item.href}
-                    component={Link}
-                    href={item.href}
-                    color="inherit"
-                    aria-current={current ? "page" : undefined}
-                    sx={{
-                      color: current ? "secondary.main" : "text.primary",
-                      fontWeight: current ? 800 : 600,
-                      fontSize: "0.92rem",
-                      px: 1,
-                      minWidth: 0,
-                      whiteSpace: "nowrap",
-                    }}
-                  >
-                    {item.label}
-                  </Button>
-                );
-              })}
-            </Stack>
-
-            <Box sx={{ display: "flex", alignItems: "center", gap: 0.5, ml: { xs: "auto", lg: 0.5 }, flexShrink: 0 }}>
+            <Box sx={{ display: "flex", alignItems: "center", gap: 0.5, ml: "auto", flexShrink: 0 }}>
               <Box sx={{ display: { xs: "inline-flex", md: "none" } }}>
                 <ScriptToggle />
               </Box>
@@ -152,6 +117,41 @@ export function Header({ site, navigation, searchEntries }: HeaderProps) {
               </IconButton>
             </Box>
           </Toolbar>
+          <Stack
+            component="nav"
+            aria-label="Главни мени"
+            direction="row"
+            sx={{
+              display: { xs: "none", lg: "flex" },
+              justifyContent: "center",
+              flexWrap: "wrap",
+              gap: 0.25,
+              pb: 0.75,
+            }}
+          >
+            {navigation.map((item) => {
+              const current = item.href === "/" ? pathname === "/" : pathname === item.href || pathname.startsWith(`${item.href}/`);
+              return (
+                <Button
+                  key={item.href}
+                  component={Link}
+                  href={item.href}
+                  color="inherit"
+                  aria-current={current ? "page" : undefined}
+                  sx={{
+                    color: current ? "secondary.main" : "text.primary",
+                    fontWeight: current ? 800 : 600,
+                    fontSize: "0.92rem",
+                    px: 1,
+                    minWidth: 0,
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {item.label}
+                </Button>
+              );
+            })}
+          </Stack>
         </Container>
       </AppBar>
 

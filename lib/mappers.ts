@@ -106,7 +106,7 @@ export function mapSettings(row: SettingsRow, fallbackFacts: SiteSettings["about
   };
 }
 
-export function mapUnionProfile(row: UnionProfileRow): UnionProfile {
+export function mapUnionProfile(row: Omit<UnionProfileRow, "id">): UnionProfile {
   return {
     name: row.name,
     logo: row.logo,
@@ -126,7 +126,7 @@ export function mapUnionProfile(row: UnionProfileRow): UnionProfile {
   };
 }
 
-export function mapUnionPost(row: UnionPostRow): UnionPost {
+export function mapUnionPost(row: Omit<UnionPostRow, "author">): UnionPost {
   return {
     id: row.id,
     kind: row.kind,

@@ -1,11 +1,11 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { canAccessAdmin } from "@/lib/roles";
+import { adminHome, canAccessAdmin } from "@/lib/roles";
 import { SESSION_COOKIE, verifySession } from "@/lib/session";
 
 /**
  * Штити /admin.
- * Администратор види цео панел. Председник синдиката само модул Синдикат.
+ * Администратор види цео панел. Задужени за синдикат, парламент и активе виде само свој модул.
  */
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -13,7 +13,7 @@ export async function proxy(request: NextRequest) {
   const session = token ? await verifySession(token) : null;
   const isLoginPage = pathname === "/admin/login";
   const allowed = session ? canAccessAdmin(session.role) : false;
-  const home = session?.role === "UNION" ? "/admin/sindikat" : "/admin";
+  const home = session ? adminHome(session.role) : "/admin";
 
   if (isLoginPage) {
     if (allowed) {
@@ -22,12 +22,12 @@ export async function proxy(request: NextRequest) {
     return NextResponse.next();
   }
 
-  if (!allowed) {
+  if (!allowed || !session) {
     return NextResponse.redirect(new URL("/admin/login", request.url));
   }
 
-  if (session?.role === "UNION" && !pathname.startsWith("/admin/sindikat")) {
-    return NextResponse.redirect(new URL("/admin/sindikat", request.url));
+  if (home !== "/admin" && pathname !== home && !pathname.startsWith(`${home}/`)) {
+    return NextResponse.redirect(new URL(home, request.url));
   }
 
   return NextResponse.next();

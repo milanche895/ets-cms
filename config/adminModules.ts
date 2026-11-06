@@ -7,7 +7,9 @@ export type AdminModuleSlug =
   | "users"
   | "menus"
   | "settings"
-  | "sindikat";
+  | "sindikat"
+  | "parlament"
+  | "aktive";
 
 export type AdminModule = {
   slug: AdminModuleSlug;
@@ -47,7 +49,7 @@ export const adminModules: AdminModule[] = [
     slug: "users",
     href: "/admin/users",
     title: "Корисници",
-    description: "Налози за администратора, уредника, аутора и касније ученика.",
+    description: "Налози за администратора, уреднике и задужене за синдикат, парламент и активе.",
     icon: "users",
     fields: ["id", "name", "email", "passwordHash", "role", "createdAt", "updatedAt"],
   },
@@ -65,6 +67,22 @@ export const adminModules: AdminModule[] = [
     title: "Синдикат",
     description: "Подаци о организацији, обавештења и активности синдиката.",
     icon: "union",
+    fields: ["name", "logo", "about", "presidentName", "email", "phone", "office", "membership"],
+  },
+  {
+    slug: "parlament",
+    href: "/admin/parlament",
+    title: "Ђачки парламент",
+    description: "Подаци о парламенту, обавештења и активности ученика.",
+    icon: "parliament",
+    fields: ["name", "logo", "about", "presidentName", "email", "phone", "office", "membership"],
+  },
+  {
+    slug: "aktive",
+    href: "/admin/aktive",
+    title: "Активе",
+    description: "Подаци о стручним активима, обавештења и термини.",
+    icon: "aktiv",
     fields: ["name", "logo", "about", "presidentName", "email", "phone", "office", "membership"],
   },
   {

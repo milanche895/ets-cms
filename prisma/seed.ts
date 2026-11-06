@@ -6,6 +6,7 @@ import { schoolMedia } from "../data/schoolMedia";
 import { mainNavigation } from "../data/navigation";
 import { pages } from "../data/pages";
 import { siteSettings } from "../data/site";
+import { aktivProfile, parliamentProfile } from "../data/groups";
 import { unionProfile } from "../data/union";
 
 const prisma = new PrismaClient();
@@ -143,17 +144,28 @@ async function main() {
       where: { menuId: menu.id, href: { in: ["/projekti", "/takmicenja"] } },
     });
 
-    if (!menuItems.some((row) => row.href === "/sindikat")) {
+    const ensured = [
+      { label: "Синдикат", href: "/sindikat" },
+      { label: "Ђачки парламент", href: "/parlament" },
+      { label: "Активе", href: "/aktive" },
+    ].filter((item) => !menuItems.some((row) => row.href === item.href));
+
+    if (ensured.length > 0) {
       const kontakt = menuItems.find((row) => row.href === "/kontakt");
       const sortOrder = kontakt?.sortOrder ?? menuItems.length;
       if (kontakt) {
         await prisma.menuItem.updateMany({
           where: { menuId: menu.id, sortOrder: { gte: kontakt.sortOrder } },
-          data: { sortOrder: { increment: 1 } },
+          data: { sortOrder: { increment: ensured.length } },
         });
       }
-      await prisma.menuItem.create({
-        data: { label: "Синдикат", href: "/sindikat", sortOrder, menuId: menu.id },
+      await prisma.menuItem.createMany({
+        data: ensured.map((item, index) => ({
+          label: item.label,
+          href: item.href,
+          sortOrder: sortOrder + index,
+          menuId: menu.id,
+        })),
       });
     }
   }
@@ -169,6 +181,19 @@ async function main() {
     await unionRecords.unionProfile.create({
       data: { id: "default", ...unionProfile },
     });
+  }
+
+  const groups = prisma as unknown as {
+    schoolGroup: {
+      findUnique(args: { where: { key: "PARLIAMENT" | "AKTIV" } }): Promise<{ key: string } | null>;
+      create(args: { data: (typeof parliamentProfile) }): Promise<unknown>;
+    };
+  };
+  for (const profile of [parliamentProfile, aktivProfile]) {
+    const existing = await groups.schoolGroup.findUnique({ where: { key: profile.key } });
+    if (!existing) {
+      await groups.schoolGroup.create({ data: profile });
+    }
   }
 
   for (const item of schoolMedia) {

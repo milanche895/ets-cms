@@ -3,16 +3,22 @@ import { getActivities } from "@/services/activities";
 import { getPublishedArticles } from "@/services/articles";
 import { getPrograms } from "@/services/programs";
 import { getProjects } from "@/services/projects";
+import { getPublishedSchoolGroupPosts, getSchoolGroupProfile } from "@/services/groups";
+import { schoolGroups } from "@/lib/school-groups";
 import { getPublishedUnionPosts, getUnionProfile } from "@/services/union";
 
 export async function getSearchEntries(): Promise<SearchEntry[]> {
-  const [articles, programs, projects, activities, union, unionPosts] = await Promise.all([
+  const [articles, programs, projects, activities, union, unionPosts, parliament, parliamentPosts, aktiv, aktivPosts] = await Promise.all([
     getPublishedArticles(),
     getPrograms(),
     getProjects(),
     getActivities(),
     getUnionProfile(),
     getPublishedUnionPosts(),
+    getSchoolGroupProfile("parliament"),
+    getPublishedSchoolGroupPosts("parliament"),
+    getSchoolGroupProfile("aktiv"),
+    getPublishedSchoolGroupPosts("aktiv"),
   ]);
 
   return [
@@ -40,8 +46,10 @@ export async function getSearchEntries(): Promise<SearchEntry[]> {
       group: "Активност",
       href:
         activity.id === "parlament"
-          ? "/o-skoli"
-          : `/vesti?kategorija=${activity.id}`,
+          ? "/parlament"
+          : activity.id === "aktive"
+            ? "/aktive"
+            : `/vesti?kategorija=${activity.id}`,
     })),
     {
       id: "sindikat",
@@ -54,6 +62,30 @@ export async function getSearchEntries(): Promise<SearchEntry[]> {
       title: post.title,
       group: post.kind === "ACTIVITY" ? "Активност синдиката" : "Обавештење синдиката",
       href: `/sindikat/${post.slug}`,
+    })),
+    {
+      id: "parlament",
+      title: parliament.name,
+      group: schoolGroups.parliament.title,
+      href: schoolGroups.parliament.publicPath,
+    },
+    ...parliamentPosts.map((post) => ({
+      id: post.id,
+      title: post.title,
+      group: post.kind === "ACTIVITY" ? "Активност парламента" : "Обавештење парламента",
+      href: `${schoolGroups.parliament.publicPath}/${post.slug}`,
+    })),
+    {
+      id: "aktive",
+      title: aktiv.name,
+      group: schoolGroups.aktiv.title,
+      href: schoolGroups.aktiv.publicPath,
+    },
+    ...aktivPosts.map((post) => ({
+      id: `aktiv-${post.id}`,
+      title: post.title,
+      group: post.kind === "ACTIVITY" ? "Активност актива" : "Обавештење актива",
+      href: `${schoolGroups.aktiv.publicPath}/${post.slug}`,
     })),
   ];
 }

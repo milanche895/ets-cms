@@ -5,8 +5,10 @@ import CategoryOutlinedIcon from "@mui/icons-material/CategoryOutlined";
 import CodeOutlinedIcon from "@mui/icons-material/CodeOutlined";
 import ComputerOutlinedIcon from "@mui/icons-material/ComputerOutlined";
 import EmojiEventsOutlinedIcon from "@mui/icons-material/EmojiEventsOutlined";
+import Diversity3OutlinedIcon from "@mui/icons-material/Diversity3Outlined";
 import GroupsOutlinedIcon from "@mui/icons-material/GroupsOutlined";
 import HandshakeOutlinedIcon from "@mui/icons-material/HandshakeOutlined";
+import MenuBookOutlinedIcon from "@mui/icons-material/MenuBookOutlined";
 import HubOutlinedIcon from "@mui/icons-material/HubOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import NewspaperOutlinedIcon from "@mui/icons-material/NewspaperOutlined";
@@ -39,6 +41,8 @@ const iconMap: Record<IconName, ElementType<SvgIconProps>> = {
   menus: MenuOutlinedIcon,
   settings: SettingsOutlinedIcon,
   union: HandshakeOutlinedIcon,
+  parliament: Diversity3OutlinedIcon,
+  aktiv: MenuBookOutlinedIcon,
 };
 
 export function AppIcon({ name, ...props }: { name: IconName } & SvgIconProps) {

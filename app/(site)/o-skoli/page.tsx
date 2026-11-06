@@ -57,6 +57,12 @@ export default async function AboutPage() {
           <LinkButton href="/vesti?kategorija=takmicenja" variant="outlined">
             Такмичења
           </LinkButton>
+          <LinkButton href="/parlament" variant="outlined">
+            Ђачки парламент
+          </LinkButton>
+          <LinkButton href="/aktive" variant="outlined">
+            Активе
+          </LinkButton>
         </Box>
       </Section>
     </>

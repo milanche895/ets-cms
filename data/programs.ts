@@ -17,8 +17,8 @@ export const programs: Program[] = [
       "Једноставни системи са микроконтролером",
       "Нови план и програм од школске 2024/25.",
     ],
-    image: "/images/school/AI_Startup01.jpg",
-    imageAlt: "Ученици на часу са рачунарима",
+    image: "/images/programs/elektrotehnicar-racunara.jpg",
+    imageAlt: "Склопљен рачунар са матичном плочом, графичком картицом и вентилаторима",
   },
   {
     id: "administrator-mreza",
@@ -36,7 +36,7 @@ export const programs: Program[] = [
       "Налози, сервиси и одржавање мреже",
       "Практичан рад на радној станици и серверу",
     ],
-    image: "/images/news-programiranje.jpg",
-    imageAlt: "Рачунари на радном месту",
+    image: "/images/programs/administrator-mreza.jpg",
+    imageAlt: "Мрежни панел са утакнутим етернет кабловима",
   },
 ];

@@ -16,6 +16,8 @@ export const roleOptions = [
   { value: "AUTHOR", label: "Аутор" },
   { value: "STUDENT", label: "Ученик" },
   { value: "UNION", label: "Председник синдиката" },
+  { value: "PARLIAMENT", label: "Председник ђачког парламента" },
+  { value: "AKTIV", label: "Координатор актива" },
 ];
 
 export const unionPostKindOptions = [

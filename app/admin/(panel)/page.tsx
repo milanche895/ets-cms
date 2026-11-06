@@ -22,6 +22,8 @@ const countBySlug = {
   users: "users",
   menus: "menus",
   sindikat: "unionPosts",
+  parlament: "parliamentPosts",
+  aktive: "aktivPosts",
   media: "gallery",
 } as const;
 
@@ -60,7 +62,18 @@ export default async function DashboardPage() {
 
       <Grid container spacing={2}>
         {adminModules
-          .filter((module) => session.role !== "UNION" || module.slug === "sindikat")
+          .filter((module) => {
+            if (session.role === "UNION") {
+              return module.slug === "sindikat";
+            }
+            if (session.role === "PARLIAMENT") {
+              return module.slug === "parlament";
+            }
+            if (session.role === "AKTIV") {
+              return module.slug === "aktive";
+            }
+            return session.role === "ADMIN";
+          })
           .map((module) => {
           const countKey = module.slug in countBySlug ? countBySlug[module.slug as keyof typeof countBySlug] : undefined;
           const value = countKey ? counts[countKey] : undefined;

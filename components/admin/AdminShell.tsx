@@ -21,6 +21,7 @@ import { AppIcon } from "@/components/common/AppIcon";
 import { SchoolLogo } from "@/components/common/SchoolLogo";
 import { adminModules } from "@/config/adminModules";
 import { roleLabels } from "@/lib/roles";
+import { schoolGroupByRole } from "@/lib/school-groups";
 import type { SessionUser } from "@/lib/session";
 
 const drawerWidth = 260;
@@ -35,24 +36,29 @@ export function AdminShell({ user, children }: AdminShellProps) {
   const router = useRouter();
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  const modules = user.role === "UNION" ? [] : adminModules;
-  const items = [
-    ...(user.role === "UNION"
+  const ownGroup = schoolGroupByRole(user.role);
+  const items =
+    user.role === "UNION"
       ? [
           { href: "/admin/sindikat", label: "Организација", icon: "union" as const, exact: true },
           { href: "/admin/sindikat/obavestenja", label: "Обавештења", icon: "articles" as const, exact: false },
           { href: "/admin/sindikat/aktivnosti", label: "Активности", icon: "trophy" as const, exact: false },
         ]
-      : [
-          { href: "/admin", label: "Преглед", icon: "dashboard" as const, exact: true },
-          ...modules.map((item) => ({
-            href: item.href,
-            label: item.title,
-            icon: item.icon,
-            exact: false,
-          })),
-        ]),
-  ];
+      : ownGroup
+        ? [
+            { href: ownGroup.adminPath, label: "Организација", icon: ownGroup.icon, exact: true },
+            { href: `${ownGroup.adminPath}/obavestenja`, label: "Обавештења", icon: "articles" as const, exact: false },
+            { href: `${ownGroup.adminPath}/aktivnosti`, label: "Активности", icon: "trophy" as const, exact: false },
+          ]
+        : [
+            { href: "/admin", label: "Преглед", icon: "dashboard" as const, exact: true },
+            ...adminModules.map((item) => ({
+              href: item.href,
+              label: item.title,
+              icon: item.icon,
+              exact: false,
+            })),
+          ];
 
   async function logout() {
     await fetch("/api/auth/logout", { method: "POST" });

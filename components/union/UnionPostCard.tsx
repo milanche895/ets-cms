@@ -6,7 +6,7 @@ import { unionPostKindLabels } from "@/components/admin/contentFields";
 import { formatDate } from "@/lib/format";
 import type { UnionPost } from "@/types/content";
 
-export function UnionPostCard({ post }: { post: UnionPost }) {
+export function UnionPostCard({ post, hrefBase = "/sindikat" }: { post: UnionPost; hrefBase?: string }) {
   const when = formatDate(post.startsAt ?? post.publishedAt);
 
   return (
@@ -47,7 +47,7 @@ export function UnionPostCard({ post }: { post: UnionPost }) {
             {post.excerpt}
           </Typography>
         ) : null}
-        <LinkButton href={`/sindikat/${post.slug}`} sx={{ alignSelf: "flex-start", px: 0 }}>
+        <LinkButton href={`${hrefBase}/${post.slug}`} sx={{ alignSelf: "flex-start", px: 0 }}>
           Прочитај више
         </LinkButton>
       </Box>

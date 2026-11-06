@@ -18,7 +18,9 @@ export type IconName =
   | "users"
   | "menus"
   | "settings"
-  | "union";
+  | "union"
+  | "parliament"
+  | "aktiv";
 
 export type UnionPostKind = "ANNOUNCEMENT" | "ACTIVITY";
 

@@ -13,7 +13,8 @@ const destinations: Record<string, string> = {
   takmicenja: "/vesti?kategorija=takmicenja",
   robotika: "/vesti?kategorija=robotika",
   programiranje: "/vesti?kategorija=programiranje",
-  parlament: "/o-skoli",
+  parlament: "/parlament",
+  aktive: "/aktive",
 };
 
 export function Competitions({ activities }: { activities: Activity[] }) {
@@ -22,7 +23,7 @@ export function Competitions({ activities }: { activities: Activity[] }) {
       <SectionTitle
         kicker="Ваннаставно"
         title="Из живота школе"
-        subtitle="Такмичења, роботика, програмирање и ученички парламент. Нова обавештења стоје у Актуелном."
+        subtitle="Такмичења, роботика, програмирање, ђачки парламент и активе."
         action={{ href: "/projekti", label: "Пројекти ученика" }}
       />
       <Grid container spacing={2.5}>

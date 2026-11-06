@@ -12,5 +12,7 @@ export const mainNavigation: NavItem[] = [
   { label: "Образовни профили", href: "/obrazovni-profili" },
   { label: "Галерија", href: "/galerija" },
   { label: "Синдикат", href: "/sindikat" },
+  { label: "Ђачки парламент", href: "/parlament" },
+  { label: "Активе", href: "/aktive" },
   { label: "Контакт", href: "/kontakt" },
 ];

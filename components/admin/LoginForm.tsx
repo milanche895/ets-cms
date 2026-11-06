@@ -6,6 +6,7 @@ import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import { useRouter } from "next/navigation";
 import { useState, type FormEvent } from "react";
+import { adminHome, isRole } from "@/lib/roles";
 
 export function LoginForm() {
   const router = useRouter();
@@ -32,7 +33,7 @@ export function LoginForm() {
         return;
       }
 
-      router.push(data.user?.role === "UNION" ? "/admin/sindikat" : "/admin");
+      router.push(isRole(data.user?.role) ? adminHome(data.user.role) : "/admin");
       router.refresh();
     } catch {
       setError("Пријава није успела. Проверите везу и покушајте поново.");
