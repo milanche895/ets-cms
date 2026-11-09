@@ -11,7 +11,11 @@ const attributeOriginals = new WeakMap<Element, Map<string, string>>();
 let latinApplied = false;
 
 function skipText(element: Element) {
-  return Boolean(element.closest("[data-script-ignore]")) || SKIP_TEXT.has(element.tagName) || element.isContentEditable;
+  return (
+    Boolean(element.closest("[data-script-ignore]")) ||
+    SKIP_TEXT.has(element.tagName) ||
+    (element instanceof HTMLElement && element.isContentEditable)
+  );
 }
 
 function syncText(node: Text, script: SiteScript) {

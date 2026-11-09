@@ -44,13 +44,13 @@ export function ScriptProvider({ initialScript, children }: { initialScript: Sit
 
     if (activeScript !== "lat") return;
 
-    const options = {
+    const options: MutationObserverInit = {
       subtree: true,
       childList: true,
       characterData: true,
       attributes: true,
       attributeFilter: [...TRANSLATED_ATTRIBUTES],
-    } as const;
+    };
 
     const observer = new MutationObserver(() => {
       observer.disconnect();
