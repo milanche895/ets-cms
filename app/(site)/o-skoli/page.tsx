@@ -29,24 +29,23 @@ export default async function AboutPage() {
         <Box
           sx={{
             display: "grid",
-            gap: { xs: 3, md: 6 },
-            gridTemplateColumns: { xs: "1fr", md: "1.3fr 0.7fr" },
+            gap: 1.5,
+            gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr", md: "repeat(auto-fit, minmax(220px, 1fr))" },
+            mb: { xs: 4, md: 5 },
           }}
         >
-          <ContentText content={page.content} />
-          <Box sx={{ display: "grid", gap: 1.5, alignContent: "start" }}>
-            {site.aboutFacts.map((fact) => (
-              <Box key={fact.label} sx={{ border: 1, borderColor: "divider", borderRadius: 2, p: 2 }}>
-                <Box component="p" sx={{ m: 0, color: "secondary.main", fontWeight: 700, fontSize: 13 }}>
-                  {fact.label}
-                </Box>
-                <Box component="p" sx={{ m: 0, mt: 0.5, fontWeight: 700 }}>
-                  {fact.value}
-                </Box>
+          {site.aboutFacts.map((fact) => (
+            <Box key={fact.label} sx={{ border: 1, borderColor: "divider", borderRadius: 2, p: 2 }}>
+              <Box component="p" sx={{ m: 0, color: "secondary.main", fontWeight: 700, fontSize: 13 }}>
+                {fact.label}
               </Box>
-            ))}
-          </Box>
+              <Box component="p" sx={{ m: 0, mt: 0.5, fontWeight: 700 }}>
+                {fact.value}
+              </Box>
+            </Box>
+          ))}
         </Box>
+        <ContentText content={page.content} />
         <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1.5, mt: 4 }}>
           <LinkButton href="/projekti" variant="outlined">
             Пројекти ученика
