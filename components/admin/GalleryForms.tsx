@@ -19,7 +19,8 @@ export function GalleryForms() {
 
   async function addPhoto(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const form = new FormData(event.currentTarget);
+    const formElement = event.currentTarget;
+    const form = new FormData(formElement);
     const file = form.get("file");
     if (!(file instanceof File) || file.size === 0) {
       setError("Изаберите слику.");
@@ -30,13 +31,13 @@ export function GalleryForms() {
     setError("");
     try {
       const response = await fetch("/api/media", { method: "POST", body: form });
-      const data = (await response.json()) as { error?: string };
+      const data = (await response.json().catch(() => ({}))) as { error?: string };
       if (!response.ok) {
-        setError(data.error ?? "Отпремање није успело.");
+        setError(data.error ?? `Отпремање није успело (${response.status}).`);
         return;
       }
       setAlt("");
-      event.currentTarget.reset();
+      formElement.reset();
       router.refresh();
     } catch {
       setError("Отпремање није успело.");
